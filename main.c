@@ -14,7 +14,7 @@ void kayitsil(FILE* fptr)
     scanf("%d",&numara);
     fseek(fptr,(numara-1)*sizeof(hasta),SEEK_SET);
       fread(&bilgi,sizeof(hasta),1,fptr);
-    if(hasta.no==numara)
+    if(bilgi.no==numara)
     {
        fseek(fptr,(numara-1)*sizeof(hasta),SEEK_SET);
        fwrite(&bilgi,sizeof(hasta),1,fptr);
@@ -34,17 +34,17 @@ void hastaduzenleme(FILE*fptr)
     scanf("%d",&numara);
      fseek(fptr,(numara-1)*sizeof(hasta),SEEK_SET);
  fread(&bilgi,sizeof(hasta),1,fptr);
- if(hasta.no==0)
+ if(bilgi.no==0)
  {
      printf("%d numarali hasta bulunmamaktadir",numara);
 
  }
  else
  {
-       printf("%d%s%d%s",bilgi.no,bilgi.ad,bigi.yas,bilgi.hastalik);
+    fprintf(fptr,"%d%s%d%s",bilgi.no,bilgi.ad,bilgi.yas,bilgi.hastalik);
        printf("yeni hastalýgý giriniz");
        gets(guncel);
-       strcmp(hasta.hastalik,guncel);
+       strcmp(bilgi.hastalik,guncel);
         fseek(fptr, (numara - 1) * sizeof(hasta), SEEK_SET);
         fwrite(&bilgi, sizeof(hasta), 1, fptr);
 
@@ -66,7 +66,7 @@ int main()
 {
     int secim;
     FILE *dosya;
-    if((dosya=fopen("hastabilgi.txt","w"))==NULL)
+    if((dosya=fopen("hastabilgi.txt","r+"))==NULL)
     {
         printf("dosya acilamadi");
     }
@@ -76,16 +76,13 @@ int main()
 int i,n;
 printf("kac hasta girisi yapicaksiniz");
 scanf("%d",&n);
-for(i=0;i<n;i++)
-{
-    printf("hasta bilgilerini giriniz");
-    scanf("%d%s%d%s",&bilgi.no,bilgi.ad,&bilgi.yas,bilgi.hastalik);
-}
-for(i=0;i<n;i++)
-{
-    fprintf(dosya,"%d%s%d%s",bilgi.no,bilgi.ad,bilgi.yas,bilgi.hastalik);
-}
+   for (i = 0; i < n; i++) {
+        hasta bilgi;
+        printf("Hasta bilgilerini giriniz:\n");
+        scanf("%d %s %d %s", &bilgi.no, bilgi.ad, &bilgi.yas, bilgi.hastalik);
+        fprintf(dosya, "%d %s %d %s\n", bilgi.no, bilgi.ad, bilgi.yas, bilgi.hastalik);
     }
+
     printf("yapmak istediginiz islemi seciniz");
     printf("1-hasta kaydi silme");
     printf("2-hasta kaydi düzenleme");
@@ -94,12 +91,13 @@ for(i=0;i<n;i++)
     scanf("%d",&secim);
     switch(secim)
     {
-        case 1:kayitsilme(dosya); break;
-        case 2:kayitduzenleme(dosya); break;
+        case 1:kayitsil(dosya); break;
+        case 2:hastaduzenleme(dosya); break;
         case 3: kayitlistele(dosya); break;
         case 4: exit(0);
         default: printf("yanlýs secim yaptýnýz");
     }
     fclose(dosya);
+    }
     return 0;
 }
