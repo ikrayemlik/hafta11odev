@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<string.h>
   typedef struct hastabilgi{
 int no;
 char ad[40];
